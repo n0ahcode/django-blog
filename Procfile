@@ -1,0 +1,1 @@
+web: gunicorn asuka__blog.wsgi --log-file -

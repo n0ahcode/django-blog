@@ -1,0 +1,108 @@
+{% extends 'card_app/layout.html' %}
+{% block main %}
+<article>
+        <div class="card text-center mb-5">
+                <p>作成日:{{card.created_at.date}}</p>
+                <h2 class="text-muted mt-5">{{card.title}}</h2>
+                <div class="card-body">
+                        {% if card.thumnail %}
+                        <img class="card-img-top img-fluid rounded " src="{{card.thumnail.url}}">
+                        {% endif %}
+                        {% if p.card_post_tag %}
+                        <div class="conteiner">
+                                <div class="row">
+                                        {% for t in p.card_post_tag.all %}
+                                        <p class="col">{{ t }}</p>
+                                        {% endfor %}
+                                </div>
+                        </div>
+                        {% endif %}
+                        {% if p.card_chemical_tag %}
+                        <div class="conteiner">
+                                <div class="row">
+                                        {% for t in p.card_chemical_tag.all %}
+                                        <p class="col">{{ t }}</p>
+                                        {% endfor %}
+                                </div>
+                        </div>
+                        {% endif %}
+                        <p>閲覧数 : {{card.view_counter}}</p>
+                        <p>{{card.text|safe}}</p>
+                </div>              
+        </div>
+</article>
+
+{% if card.friend_posts.all %}
+<div class="list-group mb-5">
+        <h3>関連記事</h3>
+        {% for r in card.friend_posts.all %}
+        <a href="{% url 'card_app:card_detail' pk=r.id %}" class="mb-3 rounded list-group-item text-decoration-none">
+                <div class="text-center">       
+                        <h2>{{ r.title }}</h2>
+                        {% if r.post_tag %}
+                <div class="conteiner">
+                        <div class="row">
+                                {% for t in r.post_tag.all %}
+                                <p class="col">{{ t }}</p>
+                                {% endfor %}
+                        </div>
+                </div>
+                {% endif %}
+                {% if r.chemical_tag %}
+                <div class="conteiner">
+                        <div class="row">
+                                {% for x in p.chemical_tag.all %}
+                                <p class="col">{{ x }}</p>
+                               {% endfor %}
+                        </div>
+                </div>
+                {% endif %} 
+                </div>
+        </a>
+        {% endfor %}
+
+</div>
+{% endif %}
+
+<div class="text-center mb-5">
+        <a href="{% url 'card_app:card_comment' pk=card.id %}" class=" btn btn-lg btn-primary">コメントする</a>
+</div>
+
+{% if comment %}
+<div class=" container">
+        <h2>コメント</h2>
+        {% for c in comment %}
+        <div class="card col my-3">
+                <div class="py-2">
+                        <h3 class="mb-3">{{c.name}}</h3>
+                        {% if c.thumnail %}
+                        <img class="card-img-top img-fluid rounded" src="{{c.thumnail.url}}">
+                        {% endif %}
+                        <p>{{c.text}}</p>
+                        <p class="text-right">{{c.created_at}}</p>
+                        <div class="text-right">
+                                <a class="btn btn-primary" href="{% url 'card_app:card_recomment' pk=card.id comment_pk=c.pk %}">返信</a>
+                        </div>
+                        {% if c.recomment_set.all %}
+                        <div class="container">
+                                {% for r in c.recomment_set.all %}
+                                <div class="card col my-3">
+                                                <div class="pt-2">
+                                                        <h3 class="mb-3">{{r.name}}</h3>
+                                                        {% if r.thumnail %}
+                                                        <img class="card-img-top rounded " src="{{r.thumnail.url}}">
+                                                        {% endif %}
+                                                        <p>{{r.text}}</p>
+                                                        <p class="text-right">{{r.created_at}}</p>
+                                                </div>
+                                </div>
+                                {% endfor %}
+                        </div>
+                        {% endif %}
+                </div>
+        </div>
+        {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

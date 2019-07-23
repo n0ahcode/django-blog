@@ -1,0 +1,14 @@
+{% extends 'card_app/layout.html' %}
+{% block main %}
+<form method="post">
+        {% csrf_token %}
+    {% for f in form %}
+    <div class="form-group">
+        <label>{{ f.label }}</label>
+        {{f}}
+    </div>
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">コメントする</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'post_app/base.html' %}
+
+{% block layout %}
+
+{% include 'post_app/includes/nav.html' %}
+
+{% include 'post_app/includes/header.html' %}
+
+<div class="container">
+    <div class="row">
+            <main class="col-12 col-md-8">
+                {% block main %}{% endblock %}
+            </main>
+            <aside class="col-12 col-md-3 offset-md-1">
+                <div class="item-group text-center mb-5 bg-white py-5 px-2 rounded">
+                    {% if profile_img.thumnail.url %}
+                    <img src="{{profile_img.thumnail.url}}" class="rounded-circle img-fluid">
+                    {% endif %}
+                    <h3>asuka</h3>
+                    <p>都内理系大学の2年生19歳</p>
+                    <p>大学では化学を専攻</p>
+                    <p>プログラミング歴8ヶ月</p>
+                    <p>Python Django</p>
+                    <p>スクレイピング 機械学習</p>
+                    <p>無機材料化学</p>
+                    <a class="btn btn-primary" href="{% url 'post_app:post_detail' pk=1 %}">→→→詳しいプロフィール</a>
+            </div>
+            
+            <div class="list-group mb-5">
+                    <p class="list-group-item">post tag</p>
+                    {% for t in post_tag %}
+                    <a class="list-group-item text-decoration-none" href="{% url 'post_app:post_tag' tag=t.name %}">{{ t }}</a>
+                    {% endfor %}
+            </div>
+
+            <div class="list-group mb-5">
+                <p class="list-group-item">chemical tag</p>
+                {% for t in chemical_tag %}
+                <a class="list-group-item text-decoration-none" href="{% url 'post_app:chemical_tag' tag=t.name %}">{{ t }}</a>
+                {% endfor %}
+            </div>
+            </aside>
+    </div>
+</div>
+
+
+{% include 'post_app/includes/footer.html' %}
+
+{% endblock %}
+

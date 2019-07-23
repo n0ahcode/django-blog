@@ -1,0 +1,23 @@
+<nav class="navbar navbar-light" style="background: linear-gradient(-135deg,#00BFFF ,#4169E1);">
+    <button class="btn btn-primary navbar-toggler" 
+    data-toggle="collapse"
+    data-target="#example-1"
+    aria-expand="false"
+    aria-controls="example-1"><span class="navbar-toggler-icon"></span></button>
+  <div class="collapse navbar-collapse" id="example-1">
+  <div class="container" style="margin-top:10px;">
+      <div class="row text-center">
+          <div class="col-lg-3 h3"><div class="card"><a class="text-decoration-none" href="{% url 'post_app:post_index' %}">home</a></div></div>
+          <div class="col-lg-3 h3"><div class="card"><a class="text-decoration-none" href="{% url 'card_app:card_index'  %}">card</a></div></div>
+          <div class="col-lg-3 h3"><div class="card"><a class="text-decoration-none" href="https://twitter.com/asuka__blog" target="_blank">@asuka__blog</a></div></div>
+          <div class="col-lg-3 h3"><div class="card form-group">
+              <form class="" action="{% url 'post_app:post_index' %}">
+                  {{ post_search_form.word }}
+                  <button class="btn mb-2 btn-block" type="submit">検索</button>                
+              </form>
+            </div>    
+          </div>
+      </div>
+  </div>
+  </div>
+</nav>

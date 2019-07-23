@@ -1,0 +1,44 @@
+{% extends 'card_app/layout.html' %}
+{% block main %}
+<div></div>
+<article>
+        {% for p in card_list %}
+        <div class="card text-center mb-5">
+                <h3 class="text-muted mt-3">{{p.title}}</h3>
+                <div class="card-body">
+                        {% if p.thumnail %}
+                        <img class="card-img-top img-fluid" src="{{p.thumnail.url}}"height="300">
+                        {% endif %}
+                        <p class="card-text">{{p.detail|safe}}</p>
+                        {% if p.card_post_tag %}
+                        <div class="conteiner">
+                                <div class="row">
+                                        {% for t in p.card_post_tag.all %}
+                                        <p class="col">{{ t }}</p>
+                                        {% endfor %}
+                                </div>
+                        </div>
+                        {% endif %}
+                        {% if p.card_chemical_tag %}
+                        <div class="conteiner">
+                                <div class="row">
+                                        {% for t in p.card_chemical_tag.all %}
+                                        <p class="col">{{ t }}</p>
+                                        {% endfor %}
+                                </div>
+                        </div>
+                        {% endif %}
+                        <p>作成日:{{p.created_at.date}}</p>
+                        <p>閲覧数 : {{p.view_counter}}</p>
+                <a class="card-link btn btn-primary" href="{% url 'card_app:card_detail' pk=p.id %}">記事を見る</a>  
+                </div>              
+        </div>
+        {% endfor %}
+</article>
+
+{% include 'card_app/includes/page.html' %}
+
+
+{% endblock %}
+
+

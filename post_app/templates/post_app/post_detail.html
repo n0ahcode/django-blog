@@ -1,0 +1,127 @@
+{% extends 'post_app/layout.html' %}
+{% block main %}
+<article>
+        <div class="card text-center mb-5">
+                <p>作成日:{{post.created_at.date}}</p>
+                <h2 class="text-muted mt-5">{{post.title}}</h2>
+                <div class="text-center">
+                        <a class="btn btn-primary col-3" href="https://twitter.com/share?url={{ request.scheme }}://{{ request.get_host }}{% url 'post_app:post_detail' pk=post.id %}&text={{post.title}}" target="_blank" rel="nofollow">
+                                Twitterでシェア
+                        </a>
+                </div>                 
+                <div class="card-body">
+                        {% if post.thumnail %}
+                        <img class="card-img-top img-fluid rounded" src="{{post.thumnail.url}}">
+                        {% endif %}
+                        {% if p.post_tag %}
+                        <div class="conteiner">
+                                <div class="row">
+                                        {% for t in p.post_tag.all %}
+                                        <p class="col">{{ t }}</p>
+                                        {% endfor %}
+                                </div>
+                        </div>
+                        {% endif %}
+                        {% if p.chemical_tag %}
+                        <div class="conteiner">
+                                <div class="row">
+                                        {% for t in p.chemical_tag.all %}
+                                        <p class="col">{{ t }}</p>
+                                        {% endfor %}
+                                </div>
+                        </div>
+                        {% endif %}
+                        <p>閲覧数 : {{post.view_counter}}</p>
+                        <p>{{post.text|safe}}</p>
+                </div>              
+        </div>
+</article>
+
+{% if post.friend_posts.all %}
+<div class="list-group mb-5">
+        <h3>関連記事</h3>
+        {% for r in post.friend_posts.all %}
+        <a href="{% url 'post_app:post_detail' pk=r.id %}" class="mb-3 rounded list-group-item text-decoration-none">
+                <div class="text-center">       
+                        <h2>{{ r.title }}</h2>
+                        {% if r.post_tag %}
+                <div class="conteiner">
+                        <div class="row">
+                                {% for t in r.post_tag.all %}
+                                <p class="col">{{ t }}</p>
+                                {% endfor %}
+                        </div>
+                </div>
+                {% endif %}
+                {% if r.chemical_tag %}
+                <div class="conteiner">
+                        <div class="row">
+                                {% for x in p.chemical_tag.all %}
+                                <p class="col">{{ x }}</p>
+                               {% endfor %}
+                        </div>
+                </div>
+                {% endif %} 
+                </div>
+        </a>
+        {% endfor %}
+
+</div>
+{% endif %}
+
+
+<div class="text-center mb-5">
+        <a href="{% url 'post_app:post_comment' pk=post.id %}" class=" btn btn-lg btn-primary">コメントする</a>
+</div>
+{% if comment %}
+<div class=" container">
+        <h2>コメント</h2>
+        {% for c in comment %}
+        <div class="card col my-3">
+                <div class="py-2">
+                        <h3 class="mb-3">{{c.name}}</h3>
+                        {% if c.thumnail %}
+                        <img class="card-img-top rounded img-fluid" src="{{c.thumnail.url}}">
+                        {% endif %}
+                        <p>{{c.text}}</p>
+                        <p class="text-right">{{c.created_at}}</p>
+                        <div class="text-right">
+                                <a class="btn btn-primary" href="{% url 'post_app:post_recomment' pk=post.id comment_pk=c.pk %}">返信</a>
+                        </div>
+                        {% if c.recomment_set.all %}
+                        <div class="container">
+                                {% for r in c.recomment_set.all %}
+                                <div class="card col my-3">
+                                                <div class="pt-2">
+                                                        <h3 class="mb-3">{{r.name}}</h3>
+                                                        {% if r.thumnail %}
+                                                        <img class="card-img-top" src="{{r.thumnail.url}}"height="300">
+                                                        {% endif %}
+                                                        <p>{{r.text}}</p>
+                                                        <p class="text-right">{{r.created_at}}</p>
+                                                </div>
+                                </div>
+                                {% endfor %}
+                        </div>
+                        {% endif %}
+                </div>
+        </div>
+        {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block meta %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@asuka__blog">
+<meta property="og:url" content="" /> 
+<meta property="og:title" content="{{post.title}}" /> 
+<meta property="og:description" content="{{post.detail}}" /> 
+{% if post.thumnail %}
+<meta name="twitter:image" content="{{post.thumnail.url}}">
+{% endif %}
+{% endblock %}
+
+
+
+
