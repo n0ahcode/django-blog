@@ -1,4 +1,4 @@
-Django==2.2.3
+Django==2.2.18
 Pillow==5.4.1
 django-summernote==0.8.11.4
 gunicorn==19.9.0
